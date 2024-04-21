@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchsingleitem } from "@/redux/actions/productActions";
+import { fetchsingleitem, addToCart as addToCartAction } from "@/redux/actions/productActions";
 
 interface Product {
   id: number;
@@ -38,6 +38,7 @@ export default function ProductDetails() {
     const newItem = { ...item, quantity };
     setCart([...cart, newItem]);
     alert("Added to cart!");
+    dispatch(addToCartAction(item.id))
   };
 
   const buyNow = () => {

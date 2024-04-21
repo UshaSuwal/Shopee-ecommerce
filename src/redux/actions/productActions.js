@@ -1,5 +1,7 @@
 export const FETCH_PRODUCT_REQUEST = 'FETCH_PRODUCT_REQUEST';
 export const FETCH_SINGLE_ITEM = 'FETCH_SINGLE_ITEM';
+export const ADD_TO_CART = 'ADD_TO_CART';
+
 
 export const fetchproductRequest = (data) => ({
   type: FETCH_PRODUCT_REQUEST,
@@ -13,3 +15,10 @@ export const fetchsingleitem = (data) => {
     payload: data
   };
 };
+
+export const addToCart=(data)=>{
+  return {
+    type: ADD_TO_CART,
+    payload: data
+  };
+}
