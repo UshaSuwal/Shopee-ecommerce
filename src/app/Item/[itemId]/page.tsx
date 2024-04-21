@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchsingleitem } from "@/redux/actions/productActions";
 
 interface Product {
   id: number;
@@ -16,35 +18,32 @@ interface Product {
   images: string[];
 }
 
-export default function ProductDetails({ params }: any) {
-  const searchParams = useSearchParams();
-  const id = searchParams.get('id');
-  const [item, setItem] = useState<Product | null>(null);
+export default function ProductDetails() {
+    const searchParams = useSearchParams();
+    const id = parseInt(searchParams.get('id') || '');
   const [quantity, setQuantity] = useState<number>(1);
   const [cart, setCart] = useState<Product[]>([]);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    if (!id) return;
-    fetch(`https://dummyjson.com/products/${id}`)
-      .then((response) => response.json())
-      .then((data: Product) => setItem(data))
-      .catch((error) => console.error("Error fetching product:", error));
-  }, [id]);
+    if (id) {
+      dispatch(fetchsingleitem(id));
+    }
+  }, [id, dispatch]);
+
+  const item = useSelector((state: { items: Product }) => state.items);
 
   const addToCart = () => {
-    if (item) {
-      const newItem = { ...item, quantity };
-      setCart([...cart, newItem]);
-      alert("Added to cart!");
-    }
+    const newItem = { ...item, quantity };
+    setCart([...cart, newItem]);
+    alert("Added to cart!");
   };
 
   const buyNow = () => {
-    if (item) {
-      const newItem = { ...item, quantity };
-      setCart([newItem]);
-      alert("Buy Now: Proceeding to checkout!");
-    }
+    const newItem = { ...item, quantity };
+    setCart([newItem]);
+    alert("Buy Now: Proceeding to checkout!");
   };
 
   return (
