@@ -3,21 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Item } from "./Item/page";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchproductRequest } from "../redux/actions/productActions";
-
-
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  discountPercentage: number;
-  rating: number;
-  stock: number;
-  brand: string;
-  category: string;
-  thumbnail: string;
-  images: string[];
-}
+import {Product} from "./DataType"
 
 export default function Home() {
   // const [items, setItems] = useState<Product[]>([]);

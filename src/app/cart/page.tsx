@@ -2,39 +2,25 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import Link from "next/link";
-
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  discountPercentage: number;
-  rating: number;
-  stock: number;
-  brand: string;
-  category: string;
-  thumbnail: string;
-  images: string[];
-}
+import { Product } from "../../app/DataType";
 
 export default function Cart() {
   const items = useSelector((state: { cart: Product[] }) => state.cart);
 
   // Calculate total amount before discounts
   const totalAmountBeforeDiscounts = items.reduce(
-    (acc, item) => acc + item.price,
+    (acc, item) => acc + item.price * item.quantity, 
     0
-  );
+  );  
 
   // Calculate total discount amount
   const totalDiscountAmount = items.reduce(
-    (acc, item) => acc + (item.price * item.discountPercentage) / 100,
+    (acc, item) => acc + (item.price * item.discountPercentage) / 100 * item.quantity, 
     0
-  );
+  );  
 
   // Calculate total amount after discounts
-  const totalAmountAfterDiscounts =
-    totalAmountBeforeDiscounts - totalDiscountAmount;
+  const totalAmountAfterDiscounts =totalAmountBeforeDiscounts - totalDiscountAmount;
 
   return (
     <div className="flex justify-center mt-8">
@@ -64,10 +50,9 @@ export default function Cart() {
                 </div>
                 <div className="w-1/6">${item.price}</div>
                 <div className="w-1/6">{item.discountPercentage}%</div>
-                <div className="w-1/6">1</div>{" "}
-                {/* Assuming quantity is 1 for each item */}
+                <div className="w-1/6">{item.quantity}</div> 
                 <div className="w-1/4">
-                  ${item.price - (item.price * item.discountPercentage) / 100}
+                  ${(item.price - (item.price * item.discountPercentage) / 100) * item.quantity} 
                 </div>
               </div>
             ))}
@@ -91,10 +76,9 @@ export default function Cart() {
         </div>
 
         <Link href={"/checkout"}>
-
-        <button className="bg-amber-600 text-white px-4 py-2 rounded">
-          Checkout
-        </button>
+          <button className="bg-amber-600 text-white px-4 py-2 rounded">
+            Checkout
+          </button>
         </Link>
       </div>
     </div>

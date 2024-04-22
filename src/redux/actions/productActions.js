@@ -1,6 +1,8 @@
 export const FETCH_PRODUCT_REQUEST = 'FETCH_PRODUCT_REQUEST';
 export const FETCH_SINGLE_ITEM = 'FETCH_SINGLE_ITEM';
 export const ADD_TO_CART = 'ADD_TO_CART';
+export const ADD_TO_PRODUCT = 'ADD_TO_PRODUCT';
+
 
 
 export const fetchproductRequest = (data) => ({
@@ -16,9 +18,12 @@ export const fetchsingleitem = (data) => {
   };
 };
 
-export const addToCart=(data)=>{
-  return {
-    type: ADD_TO_CART,
-    payload: data
-  };
-}
+export const addToCart = (productId, quantity) => ({
+  type: ADD_TO_CART,
+  payload: { productId, quantity },
+});
+
+export const addToProduct = (pId, quan) => ({
+  type: ADD_TO_PRODUCT,
+  payload: { pId, quan },
+});

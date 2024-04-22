@@ -1,23 +1,11 @@
 'use client'
 import React from 'react';
 import Link from 'next/link';
+import {Product} from "../../app/DataType"
 
 
-interface ItemData {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  discountPercentage: number;
-  rating: number;
-  stock: number;
-  brand: string;
-  category: string;
-  thumbnail: string;
-  images: string[];
-}
 
-export function Item({ item }: { item: ItemData }) {
+export function Item({ item }: { item: Product }) {
   return (
     <div key={item.id} className="border border-amber-200 rounded-lg p-4 m-4 w-96 bg-orange-50">
       <h2 className="text-2xl font-bold mb-4 text-amber-900">{item.title}</h2>

@@ -1,5 +1,10 @@
 "use client";
-import { FETCH_PRODUCT_REQUEST, FETCH_SINGLE_ITEM , ADD_TO_CART} from "../actions/productActions";
+import {
+  FETCH_PRODUCT_REQUEST,
+  FETCH_SINGLE_ITEM,
+  ADD_TO_CART,
+  ADD_TO_PRODUCT
+} from "../actions/productActions";
 
 const initialState = {
   product: [],
@@ -13,31 +18,41 @@ const productReducer = (state = initialState, action) => {
       return { ...state, product: action.payload };
 
     case FETCH_SINGLE_ITEM:
-    
       const itemId = action.payload;
-      const selectedProduct = state.product.find(
-        (p) => p.id === itemId
-      );
-    
+      const selectedProduct = state.product.find((p) => p.id === itemId);
+
       return {
         ...state,
         items: selectedProduct ? selectedProduct : null,
       };
 
-      case ADD_TO_CART:
-        const id = action.payload;
-        const itemToAdd = state.product.find((p) => p.id === id);
-        
-        
-        if (itemToAdd && !state.cart.find((item) => item.id === itemToAdd.id)) {
+      case ADD_TO_PRODUCT:
+        const { pId, quan } = action.payload;
+        const existingProduct = state.product.find((item) => item.id === pId);
+      
+        if (existingProduct) {
+          // If the product already exists in the state, update its quantity
           return {
             ...state,
-            cart: [...state.cart, itemToAdd], 
+            product: state.product.map((item) =>
+              item.id === pId ? { ...item, quantity: quan } : item
+            ),
           };
-        } else {
-          return state; // Return the current state if the item doesn't exist or is already in the cart
-        }
+        } 
       
+      case ADD_TO_CART:
+      const { productId, quantity } = action.payload;
+      const itemToAdd = state.product.find((p) => p.id === productId);
+
+      if (itemToAdd && !state.cart.find((item) => item.id === itemToAdd.id)) {
+        return {
+          ...state,
+          cart: [...state.cart, { ...itemToAdd, quantity }], 
+        };
+      } else {
+        return state;
+      }
+
     default:
       return state;
   }

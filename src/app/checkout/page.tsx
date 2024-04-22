@@ -1,47 +1,39 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { useSearchParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchsingleitem } from "@/redux/actions/productActions";
+import { fetchsingleitem, addToProduct } from "@/redux/actions/productActions";
 import { useEffect } from "react";
 import Link from "next/link";
-
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  discountPercentage: number;
-  rating: number;
-  stock: number;
-  brand: string;
-  category: string;
-  thumbnail: string;
-  images: string[];
-}
+import { Product } from "../../app/DataType";
 
 export default function Checkout() {
   const searchParams = useSearchParams();
   const id = parseInt(searchParams.get("id") || "");
+  const quantity = searchParams.get("quantity");
 
   const dispatch = useDispatch();
+
+  console.log("quantity is::::", quantity);
 
   useEffect(() => {
     if (id) {
       dispatch(fetchsingleitem(id));
+      dispatch(addToProduct(id, quantity));
     }
-  }, [id, dispatch]);
+  }, [id, quantity, dispatch]);
 
   const items = id
     ? useSelector((state: { items: Product[] }) => state.items)
     : useSelector((state: { cart: Product[] }) => state.cart);
 
-    console.log("items in checkout",items)
+  console.log("quantity in buynow", items);
 
-  const totalPrice =
-    id && items
-      ? items.price
-      : items?.reduce((total, item) => total + item.price, 0);
+  
+  
+  
+
+  
 
   return (
     <div className="h-screen flex justify-center items-center bg-gray-100">
@@ -62,8 +54,11 @@ export default function Checkout() {
                       />
                       <div>
                         <h3 className="font-semibold">{items.title}</h3>
-                        
+
                         <p className="text-gray-600">${items.price}</p>
+                        <p className="text-gray-600">
+                          Quantity:{items.quantity}
+                        </p>
                       </div>
                     </div>
                   </li>
@@ -71,7 +66,7 @@ export default function Checkout() {
               </div>
               <div>
                 <h2 className="text-xl font-semibold mb-2">Total:</h2>
-                <p className="text-2xl font-bold">${totalPrice.toFixed(2)}</p>
+                <p className="text-2xl font-bold">${items.price}</p>
                 <Link href="#">
                   <button className="bg-blue-500 text-white px-4 py-2 mt-4 inline-block rounded hover:bg-blue-600">
                     Proceed to Payment
@@ -100,18 +95,25 @@ export default function Checkout() {
                           />
                           <div>
                             <h3 className="font-semibold">{item.title}</h3>
-                            
+
                             <p className="text-gray-600">${item.price}</p>
+                            <p className="text-gray-600">
+                              Quantity:{item.quantity}
+                            </p>
                           </div>
                         </div>
+                        <h2 className="text-xl font-semibold mb-2">Total:</h2>
+                        <p className="text-2xl font-bold">
+                          $
+                          {(item.price * item.quantity)-(((item.price * item.discountPercentage)/100)*item.quantity)}
+                        </p>
+                        
                       </li>
                     ))}
                   </ul>
                 )}
               </div>
               <div>
-                <h2 className="text-xl font-semibold mb-2">Total:</h2>
-                <p className="text-2xl font-bold">${totalPrice.toFixed(2)}</p>
                 <Link href="#">
                   <button className="bg-blue-500 text-white px-4 py-2 mt-4 inline-block rounded hover:bg-blue-600">
                     Proceed to Payment

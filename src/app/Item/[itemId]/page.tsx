@@ -20,10 +20,9 @@ interface Product {
 }
 
 export default function ProductDetails() {
-    const searchParams = useSearchParams();
-    const id = parseInt(searchParams.get('id') || '');
+  const searchParams = useSearchParams();
+  const id = parseInt(searchParams.get('id') || '');
   const [quantity, setQuantity] = useState<number>(1);
-  const [cart, setCart] = useState<Product[]>([]);
 
   const dispatch = useDispatch();
 
@@ -36,17 +35,11 @@ export default function ProductDetails() {
   const item = useSelector((state: { items: Product }) => state.items);
 
   const addToCart = () => {
-    const newItem = { ...item, quantity };
-    setCart([...cart, newItem]);
+    dispatch(addToCartAction(item.id, quantity)); 
     alert("Added to cart!");
-    dispatch(addToCartAction(item.id))
   };
 
-  const buyNow = () => {
-    const newItem = { ...item, quantity };
-    setCart([newItem]);
-    alert("Buy Now: Proceeding to checkout!");
-  };
+  
 
   return (
     <div className="mt-32 mx-auto max-w-2xl">
@@ -95,12 +88,13 @@ export default function ProductDetails() {
               >
                 Add to Cart
               </button>
-            <Link href={`/checkout?id=${item.id}`}>
-              <button
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
-              >
-                Buy Now
-              </button>
+              <Link href={`/checkout?id=${item.id}?quantity=${quantity}`}>
+                <button
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+                  
+                >
+                  Buy Now
+                </button>
               </Link>
             </div>
           </div>
