@@ -28,11 +28,11 @@ const productReducer = (state = initialState, action) => {
         const id = action.payload;
         const itemToAdd = state.product.find((p) => p.id === id);
         
-        // Check if the item to add exists and is not already in the cart
+        
         if (itemToAdd && !state.cart.find((item) => item.id === itemToAdd.id)) {
           return {
             ...state,
-            cart: [...state.cart, itemToAdd], // Add the item to the cart
+            cart: [...state.cart, itemToAdd], 
           };
         } else {
           return state; // Return the current state if the item doesn't exist or is already in the cart
