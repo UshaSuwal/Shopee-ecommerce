@@ -31,7 +31,7 @@ const productReducer = (state = initialState, action) => {
         const existingProduct = state.product.find((item) => item.id === pId);
       
         if (existingProduct) {
-          // If the product already exists in the state, update its quantity
+          
           return {
             ...state,
             product: state.product.map((item) =>

@@ -88,7 +88,7 @@ export default function ProductDetails() {
               >
                 Add to Cart
               </button>
-              <Link href={`/checkout?id=${item.id}?quantity=${quantity}`}>
+              <Link href={`/checkout?id=${item.id}&quantity=${quantity}`}>
                 <button
                   className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
                   

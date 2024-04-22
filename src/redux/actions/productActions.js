@@ -11,7 +11,7 @@ export const fetchproductRequest = (data) => ({
 });
 
 export const fetchsingleitem = (data) => {
-  console.log("id in action",data); // Move console.log here if you want to log id
+  console.log("id in action",data); 
   return {
     type: FETCH_SINGLE_ITEM,
     payload: data

@@ -7,23 +7,23 @@ import { Product } from "../../app/DataType";
 export default function Cart() {
   const items = useSelector((state: { cart: Product[] }) => state.cart);
 
-  // Calculate total amount before discounts
+  
   const totalAmountBeforeDiscounts = items.reduce(
     (acc, item) => acc + item.price * item.quantity, 
     0
   );  
 
-  // Calculate total discount amount
+  
   const totalDiscountAmount = items.reduce(
     (acc, item) => acc + (item.price * item.discountPercentage) / 100 * item.quantity, 
     0
   );  
 
-  // Calculate total amount after discounts
+  
   const totalAmountAfterDiscounts =totalAmountBeforeDiscounts - totalDiscountAmount;
 
   return (
-    <div className="flex justify-center mt-8">
+    <div className="flex justify-center mt-32 m-20">
       <div className="w-3/5 mr-8">
         <h2 className="text-2xl font-bold text-amber-800 mb-4">Your Cart</h2>
         {items.length > 0 ? (
